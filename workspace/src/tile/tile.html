@@ -1,0 +1,89 @@
+﻿<div id="tile{{::tileCtrl.index}}" ng-if="tileCtrl.tile.type === 'section'" style="height: 100%; width: 100%; overflow: hidden;">
+    <div ng-if="tileCtrl.editing" style="cursor:pointer; position: absolute; top: 10px; right: 10px;" ng-click="tileCtrl.remove()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </div>
+    <div style="position: absolute; bottom: 0; width: 100%;">
+        <h2>{{tileCtrl.tile.title}}</h2>
+        <hr />
+    </div>
+    <div ng-if="tileCtrl.editing" style="cursor:pointer; position: absolute; bottom: 10px; right: 10px;" ng-click="tileCtrl.edit()">
+        <span class="glyphicon glyphicon-pencil"></span>
+    </div>
+</div>
+
+<div id="tile{{::tileCtrl.index}}" style="height: 100%; width: 100%; overflow: hidden; box-shadow: 4px 4px 4px #888888;" ng-if="tileCtrl.tile.type !== 'section'">
+    <div class="panel panel-{{tileCtrl.tile.appearance}}" style="height: 100%;">
+        <div class="panel-heading" style="height: 100%;">
+            <div ng-if="tileCtrl.editing" style="cursor:pointer; position: absolute; top: 10px; right: 10px;" ng-click="tileCtrl.remove()">
+                <span class="glyphicon glyphicon-remove"></span>
+            </div>
+            <div ng-if="!tileCtrl.editing" style="cursor:pointer; position: absolute; top: 10px; right: 10px;" ng-click="tileCtrl.expand()">
+                <span class="glyphicon" ng-class="{'glyphicon-resize-full': !tileCtrl.expanded, 'glyphicon-resize-small': tileCtrl.expanded}"></span>
+            </div>
+
+            <h4 ng-if="!tileCtrl.loading">{{tileCtrl.tile.title}}</h4>
+            <label ng-if="tileCtrl.loading">Loading...</label>
+
+            <div ng-show="!tileCtrl.expanded">
+                <p style="font-size: 4em;" ng-if="tileCtrl.tile.type === 'aggregation'">{{tileCtrl.aggregation}}</p>
+                <!--<h1 data-fittext=".9" ng-if="tileCtrl.tile.type === 'timer'">{{tileCtrl.timeRemaining}}</h1>-->
+                <p style="font-size: 3.5em;" ng-if="tileCtrl.tile.type === 'timer'">{{tileCtrl.timeRemaining}}</p>
+
+                <div ng-if="tileCtrl.tile.type === 'chart' && !tileCtrl.loading">
+                    <c3chart bindto-id="donut-plot{{tileCtrl.index}}-chart" chart-data="tileCtrl.points" chart-columns="tileCtrl.columns" callback-function="tileCtrl.handleCallback" chart-x="tileCtrl.datax" data-empty-label-text="(none)">
+                        <!--<chart-legend show-legend="{{tileCtrl.width === 2}}" />-->
+                        <chart-pie ng-if="tileCtrl.tile.displayType === 'pie'" expand="true" show-label="true" threshold-label="0.1" label-format-function="tileCtrl.formatLabel"/>
+                        <chart-donut ng-if="tileCtrl.tile.displayType === 'donut'" title="{{tileCtrl.tasks.length}}" width="60" label-format-function="tileCtrl.formatLabel"/>
+                        <chart-events on-click-data="tileCtrl.dataClicked(data)" />
+                        <chart-axis ng-if="tileCtrl.tile.displayType === 'line'">
+                            <chart-axis-x axis-id="x" axis-type="timeseries">
+                                <chart-axis-x-tick tick-format="%Y-%m-%d" />
+                            </chart-axis-x>
+                        </chart-axis>
+                    </c3chart>
+                </div>
+
+                <div ng-if="tileCtrl.tile.type === 'table' && !tileCtrl.loading">
+                    <table class="table" style="table-layout:fixed;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th ng-repeat="header in tileCtrl.tableColumnHeaders | limitTo:tileCtrl.tableColumnCount track by header" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" ng-style="{'width': 'calc(100% /' + tileCtlr.tableColumnCount + ')'}">{{header}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in tileCtrl.table | limitTo:tileCtrl.tableRowCount track by $index" ng-init="rowIndex = $index">
+                                <td ng-repeat="col in row | limitTo:(tileCtrl.tableColumnCount + 1) track by $index" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" ng-style="{'width': 'calc(100% /' + tileCtlr.tableColumnCount + ')'}">
+                                    <strong ng-if="$first">{{tileCtrl.tableRowHeaders[rowIndex]}}</strong>
+                                    <div ng-if="!$first">{{tileCtrl.table[rowIndex][$index] || 0}}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div ng-if="tileCtrl.tile.type === 'calendar' && !tileCtrl.loading">
+                    <div ui-calendar="tileCtrl.uiConfig.calendar" class="calendar" ng-model="tileCtrl.eventSources"></div>
+                </div>
+            </div>
+
+            <div ng-if="tileCtrl.showGrid" style="position: relative;">
+                <!--<div ui-grid="tileCtrl.gridOptions" class="ui-grid-hover ui-grid-bordered ui-grid-striped" style="background-color: white; color: black; height: {{tileCtrl.gridHeight}}px" ui-grid-responsive ui-grid-resize-columns></div>
+                <div style="position: absolute; top: 10px; left: 10px;" ng-click="tileCtrl.moveColumns('left')" ng-if="!tileCtrl.gridOptions.columnDefs[1].visible">
+                    <span class="glyphicon glyphicon-arrow-left" style="color: black; cursor: pointer;"></span>
+                </div>
+                <div style="position: absolute; top: 10px; right: 10px;" ng-click="tileCtrl.moveColumns('right')" ng-if="!tileCtrl.gridOptions.columnDefs[tileCtrl.gridOptions.columnDefs.length - 1].visible">
+                    <span class="glyphicon glyphicon-arrow-right" style="color: black; cursor: pointer;"></span>
+                </div>-->
+                <div ag-grid="tileCtrl.gridOptions" class="ag-bootstrap" style="background-color: white; color: black; height: {{tileCtrl.gridHeight}}px"></div>
+            </div>
+
+            <div ng-if="tileCtrl.editing" style="cursor:pointer; position: absolute; bottom: 10px; right: 10px;" ng-click="tileCtrl.edit()">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </div>
+            <div ng-if="!tileCtrl.editing && tileCtrl.newTaskCount > 0 && !tileCtrl.expanded" style="position: absolute; bottom: 10px; right: 10px;">
+                <span class="badge">{{tileCtrl.newTaskCount}}</span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,290 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Add Tile</h3>
+</div>
+
+<div class="modal-body">
+    <label class="control-label" for="title">Title:</label>
+    <input type="text" class="form-control" name="title" ng-model="newTileModalCtrl.title" />
+
+    <div>
+        <label class="control-label">Size:</label>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="control-label" for="sizeY">Rows:</label>
+                <select class="form-control" name="sizeY" ng-model="newTileModalCtrl.sizeY" ng-options="col for col in newTileModalCtrl.columns"></select>
+            </div>
+            <div class="col-lg-6">
+                <label class="control-label" for="sizeX">Columns:</label>
+                <select class="form-control" name="sizeX" ng-model="newTileModalCtrl.sizeX" ng-options="row for row in newTileModalCtrl.rows"></select>
+            </div>
+        </div>
+    </div>
+
+    <label class="control-label" for="appearance">Appearance:</label> <br />
+    <div class="btn-group btn-group-justified" data-toggle="buttons" name="appearance">
+        <label class="btn btn-default" ng-click="newTileModalCtrl.appearance = 'default'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'default'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+        <label class="btn btn-primary" ng-click="newTileModalCtrl.appearance = 'primary'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'primary'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+        <label class="btn btn-info" ng-click="newTileModalCtrl.appearance = 'info'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'info'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+        <label class="btn btn-success" ng-click="newTileModalCtrl.appearance = 'success'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'success'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+        <label class="btn btn-warning" ng-click="newTileModalCtrl.appearance = 'warning'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'warning'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+        <label class="btn btn-danger" ng-click="newTileModalCtrl.appearance = 'danger'" ng-class="{ 'acitve': newTileModalCtrl.appearance === 'danger'}">
+            <input type="radio" name="options">&nbsp;
+        </label>
+    </div>
+    <br />
+
+    <label class="control-label" for="type">Type:</label>
+    <select class="form-control" name="type" ng-model="newTileModalCtrl.type">
+        <option value="aggregation">Aggregation</option>
+        <!--<option value="calendar">Calendar</option>-->
+        <option value="chart">Chart</option>
+        <!--<option value="section">Section</option>-->
+        <option value="table">Table</option>
+        <option value="timer">Timer</option>
+    </select>
+
+    <!--<div ng-if="newTileModalCtrl.type === 'calendar'">
+        <div class="col-xs-6">
+            <label class="control-label" for="type">Start Property:</label>
+            <select class="form-control" name="type" ng-model="newTileModalCtrl.group" ng-options="dateProperties for dateProperties in newTileModalCtrl.dateProperties"></select>
+        </div>
+        <div class="col-xs-6">
+            <label class="control-label" for="type">End Property:</label>
+            <select class="form-control" name="type" ng-model="newTileModalCtrl.groupAlt" ng-options="dateProperties for dateProperties in newTileModalCtrl.dateProperties"></select>
+        </div>
+    </div>-->
+
+    <div ng-if="newTileModalCtrl.type === 'timer'">
+        <label class="control-label" for="displayType">Time Property:</label>
+        <select class="form-control" name="displayType" ng-model="newTileModalCtrl.group" ng-options="dateProperties for dateProperties in newTileModalCtrl.dateProperties"></select>
+    </div>
+
+    <div ng-if="newTileModalCtrl.type === 'aggregation'">
+        <label class="control-label" for="displayType">Aggregation Type:</label>
+        <select class="form-control" name="displayType" ng-model="newTileModalCtrl.displayType">
+            <option value="count">Count</option>
+            <option value="max">Max</option>
+            <option value="min">Min</option>
+            <option value="sum">Sum</option>
+        </select>
+
+        <div ng-if="newTileModalCtrl.displayType && newTileModalCtrl.displayType !== 'count'">
+            <label class="control-label" for="aggType">Aggregation Property:</label>
+            <select class="form-control" name="aggType" ng-model="newTileModalCtrl.group">
+                <option value="count">Count</option>
+                <option value="max">Max</option>
+                <option value="min">Min</option>
+                <option value="sum">Sum</option>
+                <option value="mean">Average</option>
+            </select>
+        </div>
+    </div>
+
+    <div ng-if="newTileModalCtrl.type === 'chart'">
+        <label class="control-label" for="type">Chart Type:</label>
+        <select class="form-control" name="type" ng-model="newTileModalCtrl.displayType">
+            <option value="bar">Bar</option>
+            <option value="donut">Donut</option>
+            <option value="pie">Pie</option>
+            <option value="line">Line</option>
+        </select>
+
+        <div class="checkbox" ng-if="newTileModalCtrl.displayType === 'line'">
+            <!--<label>
+                <input type="checkbox" ng-model="newTileModalCtrl.overTime" /> Over time
+            </label>-->
+
+            <label class="control-label" for="date">Date</label>
+            <select class="form-control" name="date" ng-model="newTileModalCtrl.groupAlt">
+                <option value="CreatedOn">CreatedOn</option>
+                <option value="DueDate">DueDate</option>
+            </select>
+        </div>
+
+        <!--<div ng-if="newTileModalCtrl.overTime">-->
+            <!--<label class="control-label" for="date">Date</label>
+            <select class="form-control" name="date" ng-model="newTileModalCtrl.groupAlt">
+                <option value="CreatedOn">CreatedOn</option>
+                <option value="DueDate">DueDate</option>
+            </select>-->
+        <!--</div>-->
+    </div>
+
+    <div ng-if="newTileModalCtrl.type === 'table'">
+        <label class="control-label" for="type">Table Type:</label>
+        <select class="form-control" name="type" ng-model="newTileModalCtrl.displayType">
+            <option value="association">Association</option>
+        </select>
+
+        <div ng-if="newTileModalCtrl.displayType === 'association'" class="row">
+            <div class="col-xs-6">
+                <label class="control-label" for="group">Row Property:</label>
+                <select class="form-control" name="group" ng-model="newTileModalCtrl.groupAlt">
+                    <option value="AssignedTo">AssignedTo</option>
+                    <option value="Group">Group</option>
+                    <option value="Severity">Severity</option>
+                    <option value="Status">Status</option>
+                </select>
+            </div>
+            <div class="col-xs-6">
+                <label class="control-label" for="groupAlt">Column Property:</label>
+                <select class="form-control" name="groupAlt" ng-model="newTileModalCtrl.group">
+                    <option value="AssignedTo">AssignedTo</option>
+                    <option value="Group">Group</option>
+                    <option value="Severity">Severity</option>
+                    <option value="Status">Status</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="newTileModalCtrl.type === 'chart'">
+        <div class="row">
+            <div ng-class="{'col-sm-6': newTileModalCtrl.displayType === 'line', 'col-xs-12': newTileModalCtrl.displayType !== 'line'}">
+                <label class="control-label" for="chartProperty">Chart Property:</label>
+                <select class="form-control" name="chartProperty" ng-model="newTileModalCtrl.group">
+                    <option value="AssignedTo">AssignedTo</option>
+                    <option value="Group">Group</option>
+                    <option value="Severity">Severity</option>
+                    <option value="Status">Status</option>
+                    <option value="TaskType">TaskType</option>
+                </select>
+            </div>
+
+            <div class="col-sm-6" ng-if="newTileModalCtrl.displayType === 'line' || newTileModalCtrl.displayType === 'bar'">
+                <label class="control-label" for="xaxis">X-axis: (optional for bar charts)</label>
+                <select class="form-control" name="xaxis" ng-model="newTileModalCtrl.groupAlt" ng-options="dateProperties for dateProperties in newTileModalCtrl.dateProperties">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <label class="control-label" for="filter">Filter:</label>
+    <div class="row">
+        <div ng-repeat="item in newTileModalCtrl.filter" class="col-lg-12">
+            <div class="row">
+                <div class="col-xs-1">
+                    <button class="btn" ng-click="newTileModalCtrl.addFilter($index + 1)">
+                        <span class="glyphicon glyphicon-plus green"></span>
+                    </button>
+                </div>
+                <div class="col-xs-1">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" ng-if="!$first" ng-model="item.logicalOperator">
+                        <option value="and">And</option>
+                        <option value="or">Or</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <input type="text" ng-model="item.field" uib-typeahead="field for field in newTileModalCtrl.fields | filter:$viewValue" class="form-control" typeahead-show-hint="true" typeahead-min-length="0" typeahead-wait-ms="150">
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" ng-model="item.operator" ng-options="operator for operator in newTileModalCtrl.getOperators(item.field)"></select>
+                </div>
+                <div class="col-xs-3">
+                    <div ng-switch="newTileModalCtrl.fieldType(item.field)">
+                        <div ng-switch-when="number">
+                            <div ng-if="newTileModalCtrl.fieldValues(item.field).length > 0">
+                                <select class="form-control" ng-model="item.value" ng-options="value for value in newTileModalCtrl.fieldValues(item.field)"></select>
+                            </div>
+                            <div ng-if="!newTileModalCtrl.fieldValues(item.field)">
+                                <input class="form-control" type="number" ng-model="item.value" />
+                            </div>
+                        </div>
+                        <div ng-switch-when="boolean">
+                            <select class="form-control" ng-model="item.value">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                        <div ng-switch-when="date">
+                            <div ng-if="item.operator !== 'next' && item.operator !== 'last'">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup ng-model="item.value" is-open="newTileModalCtrl.datepickerOpen" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="newTileModalCtrl.datepickerOpen = !newTileModalCtrl.datepickerOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div ng-if="item.operator === 'next' || item.operator === 'last'" class="row">
+                                <div class="col-xs-6">
+                                    <input class="form-control" type="number" ng-model="item.value" />
+                                </div>
+                                <div class="col-xs-6">
+                                    <p>Days</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-switch-default>
+                            <div ng-if="newTileModalCtrl.fieldValues(item.field).length > 0">
+                                <select class="form-control" ng-model="item.value" ng-options="value for value in newTileModalCtrl.fieldValues(item.field)"></select>
+                            </div>
+                            <div ng-if="!newTileModalCtrl.fieldValues(item.field)">
+                                <input class="form-control" type="text" ng-model="item.value" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+                    <button class="btn" ng-if="$index > 0 || newTileModalCtrl.filter.length > 1" ng-click="newTileModalCtrl.removeFilter($index)">
+                        <span class="glyphicon glyphicon-remove red"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <label class="control-label">Table Columns:</label>
+        <div class="row">
+            <div class="col-xs-5">
+                <label class="control-label" for="availableColumns">Available:</label>
+                <select class="form-control" name="availableColumns" multiple size="10" ng-model="newTileModalCtrl.selectedOfAvailable" ng-options="col for col in newTileModalCtrl.availableColumns"></select>
+            </div>
+            <div class="col-xs-1">
+                <div class="text-center">
+                    <br />
+                    <button class="btn btn-default" ng-click="newTileModalCtrl.addSelected()" ng-disabled="newTileModalCtrl.selectedOfAvailable.length === 0"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                    <br/>
+                    <button class="btn btn-default" ng-click="newTileModalCtrl.removeSelected()" ng-disabled="newTileModalCtrl.selectedOfSelected.length === 0"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <label class="control-label" for="selectedColumns">Selected:</label>
+                <select class="form-control" name="selectedColumns" multiple size="10" ng-model="newTileModalCtrl.selectedOfSelected" ng-options="col for col in newTileModalCtrl.selectedColumns"></select>
+            </div>
+            <div class="col-xs-1">
+                <div class="text-center">
+                    <br />
+                    <button class="btn btn-default" ng-click="newTileModalCtrl.moveSelected('up')" ng-disabled="newTileModalCtrl.selectedOfSelected.length === 0"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                    <br />
+                    <button class="btn btn-default" ng-click="newTileModalCtrl.moveSelected('down')" ng-disabled="newTileModalCtrl.selectedOfSelected.length === 0"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="newTileModalCtrl.cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" ng-click="newTileModalCtrl.save()">
+        Save
+    </button>
+</div>

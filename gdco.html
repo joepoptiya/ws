@@ -1,0 +1,69 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </button>
+        <a href="" class="navbar-brand" ng-click="gdcoCtrl.sidebarOpen = !gdcoCtrl.sidebarOpen">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </a>
+        <a class="navbar-brand" ui-sref="gdco.home" ng-click="gdcoCtrl.sidebarOpen = false">
+            GDCO App
+        </a>
+        <!--<div class="navbar-brand">
+            <a class="navbar-brand-glyph" href="" ng-click="gdcoCtrl.sidebarOpen = !gdcoCtrl.sidebarOpen;"><span class="glyphicon glyphicon-th"></span></a>
+            <a class="navbar-brand-text" href="#">GDCO App</a>
+        </div>-->
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"></span><span class="badge" ng-cloak>{{gdcoCtrl.notifications.length}}</span> <span class="visible-xs-inline">Notifications</span></a>
+                <ul class="dropdown-menu">
+                    <li id="notification-container" ng-repeat="notification in gdcoCtrl.notifications | orderBy:'date':true | limitTo:5">
+                        <div ng-class="gdcoCtrl.getNotificationClass(notification)" ng-click="gdcoCtrl.openNotificationsModal(notification)">
+                            <button class="notification-close-button" ng-click="gdcoCtrl.removeNotification(notification); $event.stopPropogation()">&times;</button>
+                            <div ng-switch on="allowHtml">
+                                <div ng-switch-default ng-if="notification.title" class="notification-title" aria-label="{{notification.title}}">{{notification.title}}</div>
+                                <div ng-switch-default class="notification-message" aria-label="{{notification.message}}">{{notification.message}}</div>
+                                <div ng-switch-when="true" ng-if="notification.title" class="notification-title" ng-bind-html="title"></div>
+                                <div ng-switch-when="true" class="notification-message" ng-bind-html="message"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a ng-click="gdcoCtrl.clearNotifications()">Clear All</a></li>
+                </ul>
+            </li>
+            <li><a ui-sref="gdco.usersettings"><span class="glyphicon glyphicon-cog"></span> <span class="visible-xs-inline">Settings</span></a></li>
+            <li><p class="navbar-text" ng-cloak>{{gdcoCtrl.userInfo.userName}}</p></li>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<!-- sidebar -->
+<div class="navbar-default">
+    <div class="sidebar-menu" ng-class="{'active': gdcoCtrl.sidebarOpen}">
+        <ul class="nav navbar-nav">
+            <li ng-repeat="menuItem in gdcoCtrl.sidebarMenuItems | orderBy:'order'" ng-click="gdcoCtrl.sidebarOpen = false; gdcoCtrl.selectSidebarMenuItem(menuItem)">
+                <a permission permission-only="menuItem.permissions" class="btn menu-item" ng-class="{ 'btn-primary': !menuItem.isSelected, 'btn-info': menuItem.isSelected }" ng-if="menuItem.flightingName ? isFlightingEnabled(menuItem.flightingName) : true" ui-sref="{{menuItem.state}}" title="{{menuItem.name}}">
+                    <span class="menu-item-icon" ng-class="menuItem.iconClass"></span>
+                    <span class="menu-item-text">{{menuItem.name}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Inject view -->
+<div class="gdco-content" ng-class="{'active': gdcoCtrl.sidebarOpen}">
+    <div class="gdco-padding">
+        <div ui-view></div>
+    </div>
+
+    <footer class="mainFooter gdco-padding">
+        <p style="display: inline-block;">Copyright &copy; 2017 <a href="http://www.microsoft.com">Microsoft</a></p>
+        <a class="pull-right" href="https://microsoft.sharepoint.com/teams/msdpn/SitePages/default.aspx">Microsoft Data Protection Notice</a>
+    </footer>
+</div>

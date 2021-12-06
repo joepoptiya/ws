@@ -1,0 +1,21 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Task Preview</h3>
+</div>
+
+<div class="modal-body">
+    <div ng-repeat="field in previewTaskModalCtrl.fields track by field">
+        <div class="row">
+            <div class="col-xs-4">
+                <strong>{{::field}}:</strong>
+            </div>
+            <div class="col-xs-8">
+                <p>{{::previewTaskModalCtrl.task[field]}}</p>
+            </div>
+        </div>
+        <hr ng-if="!$last" style="margin: 10px 0px;"/>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="previewTaskModalCtrl.close()">Close</button>
+</div>

@@ -1,0 +1,25 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">New Workspace</h3>
+</div>
+
+<div class="modal-body">
+    <label class="control-label" for="name">Name:</label>
+    <input type="text" class="form-control" name="name" ng-model="newWorkspaceModalCtrl.name" />
+
+    <label class="control-label" for="sizeY">Query:</label>
+    <select class="form-control" name="sizeY" ng-model="newWorkspaceModalCtrl.query">
+        <option value="assignedToMe">Tasks assigned to me</option>
+        <option value="atMyLocation">Tasks at my location</option>
+        <option value="atDatacenters">Tasks at datacenter(s)</option>
+    </select>
+
+    <div ng-if="newWorkspaceModalCtrl.query === 'atDatacenters'">
+        <label class="control-label">Select Datacenter(s):</label>
+        <div ui-grid="newWorkspaceModalCtrl.gridOptions" class="ui-grid-striped" ui-grid-selection></div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="newWorkspaceModalCtrl.cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" ng-click="newWorkspaceModalCtrl.create()">Create</button>
+</div>

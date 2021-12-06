@@ -1,0 +1,34 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Open Workspace</h3>
+</div>
+
+<div class="modal-body">
+    <label class="control-label" for="preset">Presets (Not yet implemented):</label>
+    <select class="form-control" name="preset" ng-model="openWorkspaceModalCtrl.workspace" ng-options="ws as ws.name for ws in openWorkspaceModalCtrl.presets" ng-disabled="true"></select>
+
+    <label class="control-label" for="createdByMe">Created by me:<span class="loader" ng-if="openWorkspaceModalCtrl.loadingMyWorkspaces"></span></label>
+    <select class="form-control" name="createdByMe" ng-model="openWorkspaceModalCtrl.workspace" ng-options="ws as ws.name for ws in openWorkspaceModalCtrl.myWorkspaces"></select>
+
+    <label class="control-label" for="sharedWithMe">Shared with me:<span class="loader" ng-if="openWorkspaceModalCtrl.loadingSharedWorkspaces"></span></label>
+    <select class="form-control" name="sharedWithMe" ng-model="openWorkspaceModalCtrl.workspace" ng-options="ws as ws.name for ws in openWorkspaceModalCtrl.sharedWorkspaces"></select>
+
+    <label class="control-label" for="sharedWithMe">Search public workspaces:<span class="loader" ng-if="openWorkspaceModalCtrl.searching"></span></label>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search..." ng-model="openWorkspaceModalCtrl.query" />
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openWorkspaceModalCtrl.search()"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+        <select class="form-control" name="sharedWithMe" ng-model="openWorkspaceModalCtrl.searchOptions">
+            <option value="name" ng-selected="!openWorkspaceModalCtrl.searchOptions">Name</option>
+            <option value="createdBy">Author</option>
+        </select>
+    </div>
+
+    <p ng-if="openWorkspaceModalCtrl.gridOptions.data.length === 0">No Results</p>
+    <div ng-if="openWorkspaceModalCtrl.gridOptions.data.length > 0" ui-grid="openWorkspaceModalCtrl.gridOptions" ui-grid-selection></div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="openWorkspaceModalCtrl.cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" ng-click="openWorkspaceModalCtrl.open()">Open</button>
+</div>

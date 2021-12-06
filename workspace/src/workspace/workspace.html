@@ -1,0 +1,54 @@
+﻿<div class="h1">
+    GDCO Workspace
+    <div class="pull-right hidden-xs">
+        <button class="btn btn-default" ng-click="workspaceCtrl.newWorkspace()" ng-show="!workspaceCtrl.editing" title="New Workspace"><span class="glyphicon glyphicon-plus"></span></button>
+        <button class="btn btn-default" ng-click="workspaceCtrl.openWorkspace()" ng-show="!workspaceCtrl.editing" title="Open Workspace"><span class="glyphicon glyphicon-folder-open"></span></button>
+        <button class="btn btn-default" ng-click="workspaceCtrl.editWorkspace(true)" ng-show="workspaceCtrl.canEditWorkspace()" title="Edit Workspace"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button class="btn btn-default" ng-click="workspaceCtrl.shareWorkspace()" ng-show="workspaceCtrl.canShareWorkspace()" title="Share Workspace"><span class="glyphicon glyphicon-user"></span></button>
+        <button class="btn btn-default" ng-click="workspaceCtrl.saveWorkspace()" ng-show="workspaceCtrl.editing" title="Save Workspace"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+        <button class="btn btn-default" ng-click="workspaceCtrl.cancel()" ng-show="workspaceCtrl.editing" title="Cancel Changes"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+    <div class="pull-right visible-xs">
+        <div class="btn-group" uib-dropdown is-open="workspaceCtrl.isopen">
+            <button id="menu-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
+                <span class="glyphicon glyphicon-option-vertical"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="menu-dropdown">
+                <li role="menuitem"><a ng-click="workspaceCtrl.newWorkspace()" ng-show="!workspaceCtrl.editing">New</a></li>
+                <li role="menuitem"><a ng-click="workspaceCtrl.openWorkspace()" ng-show="!workspaceCtrl.editing">Open</a></li>
+                <li role="menuitem"><a ng-click="workspaceCtrl.editWorkspace(true)" ng-show="workspaceCtrl.canEditWorkspace()">Edit</a></li>
+                <li role="menuitem"><a ng-click="workspaceCtrl.shareWorkspace()" ng-show="workspaceCtrl.canShareWorkspace()">Share</a></li>
+                <li role="menuitem"><a ng-click="workspaceCtrl.saveWorkspace()" ng-show="workspaceCtrl.editing">Save</a></li>
+                <li role="menuitem"><a ng-click="workspaceCtrl.cancel()" ng-show="workspaceCtrl.editing">Cancel</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h1 ng-if="workspaceCtrl.workspaces.length === 0">
+    <small>It's lonely here. Open or create a new workspace.</small>
+</h1>
+
+<ul class="nav nav-tabs">
+    <li role="presentation" ng-repeat="workspace in workspaceCtrl.workspaces" ng-class="{'active': $index === workspaceCtrl.currentIndex}">
+        <a ng-click="workspaceCtrl.setCurrentWorkspace($index)">{{workspace.name}} <span class="glyphicon glyphicon-remove" style="color: black; cursor: pointer;" ng-click="workspaceCtrl.removeWorkspace($index); $event.stopPropagation();"></span></a>
+    </li>
+</ul>
+
+<div gridster="workspaceCtrl.gridsterOpts" id="grid" ng-if="workspaceCtrl.workspaces.length > 0">
+    <ul infinite-scroll="workspaceCtrl.increaseTileLimit()">
+        <li ng-repeat="tile in workspaceCtrl.workspaces[workspaceCtrl.currentIndex].tiles | limitTo:workspaceCtrl.tileLimit track by $index" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX" size-y="tile.sizeY">
+            <tile tile-data="tile" query="workspaceCtrl.workspaces[workspaceCtrl.currentIndex].query" datacenters="workspaceCtrl.workspaces[workspaceCtrl.currentIndex].datacenters" index="$index" expand-tile="workspaceCtrl.expandTile(index, expand)" edit-tile="workspaceCtrl.editTile(index)" add-tile="workspaceCtrl.addTile(tile)" editing="workspaceCtrl.editing" remove-tile="workspaceCtrl.removeTile(index)"></tile>
+        </li>
+
+        <li gridster-item ng-if="workspaceCtrl.editing" size-x="1" size-y="1" min-size-x="1" min-size-y="1" max-size-x="1" max-size-y="1">
+            <div class="panel panel-default" style="height: 100%; width:100%;" ng-click="workspaceCtrl.newTile()">
+                <div class="panel-body" style="height: 100%; display: flex; align-items: center;">
+                    <h2 style="width: 100%; margin: 0;">
+                        <span class="glyphicon glyphicon-plus text-center" style="display: block;"></span>
+                    </h2>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
